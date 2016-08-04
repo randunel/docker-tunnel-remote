@@ -21,8 +21,6 @@ continue_init() {
     trap - SIGUSR2;
     trap - SIGINT;
 
-    unbound &
-
     printf "Executing openvpn.\n";
     exec 3< <(openvpn "${@:1}");
     OPENVPN_PID=$!;
@@ -42,6 +40,8 @@ continue_init() {
     done <&3;
 
     # exec 3<&-;
+
+    unbound &
 
     printf "Setting up iptables\n";
     iptables -t nat -A POSTROUTING -o $DOCKER_IF -j MASQUERADE;
