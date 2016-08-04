@@ -1,8 +1,13 @@
-FROM alpine:3.4
+FROM ubuntu:16.04
 
-RUN apk add --no-cache unbound
+RUN apt-get update && \
+        apt-get install -y iptables iproute2 unbound
+
+# RUN apk add --no-cache unbound bash && \
+#         rm -rf /var/cache/apk/*
 
 ADD unbound.conf /etc/unbound/unbound.conf
 ADD entrypoint.sh /root/entrypoint.sh
 
-ENTRYPOINT ["/root/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["/root/entrypoint.sh"]
